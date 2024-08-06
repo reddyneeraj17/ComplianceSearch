@@ -1,0 +1,36 @@
+-- Insert dummy data into INDUSTRY
+INSERT INTO INDUSTRY (industryName, created_by, updated_by) VALUES 
+('Energy', 'admin', 'admin'), 
+('Technology', 'admin', 'admin'), 
+('Healthcare', 'admin', 'admin');
+
+-- Insert dummy data into SECTOR
+INSERT INTO SECTOR (sectorName, industryId, created_by, updated_by) VALUES 
+('Oil & Gas', 1, 'admin', 'admin'), 
+('Software', 2, 'admin', 'admin'), 
+('Pharmaceuticals', 3, 'admin', 'admin');
+
+-- Insert dummy data into COUNTRY
+INSERT INTO COUNTRY (countryName, created_by, updated_by) VALUES 
+('USA', 'admin', 'admin'), 
+('Canada', 'admin', 'admin'), 
+('Germany', 'admin', 'admin');
+
+-- Insert dummy data into REGION
+INSERT INTO REGION (regionName, countryId, created_by, updated_by) VALUES 
+('California', 1, 'admin', 'admin'), 
+('Texas', 1, 'admin', 'admin'), 
+('Ontario', 2, 'admin', 'admin'), 
+('Bavaria', 3, 'admin', 'admin');
+
+-- Insert dummy data into COMPANY
+INSERT INTO COMPANY (companyName, industryId, sectorId, regionId, zipCode, created_by, updated_by) VALUES 
+('Company A', 1, 1, 1, '90001', 'admin', 'admin'), 
+('Company B', 2, 2, 2, '73301', 'admin', 'admin'), 
+('Company C', 3, 3, 3, 'M5V', 'admin', 'admin');
+
+-- Insert dummy data into COMPLIANCE_RULES
+INSERT INTO COMPLIANCE_RULES (ruleDescription, industryId, sectorId, countryId, regionId, ruleType, effectiveDate, effectiveEndDate, created_by, updated_by) VALUES 
+('Rule 1', 1, 1, 1, 1, 'Type A', '2023-01-01', '2024-01-01', 'admin', 'admin'), 
+('Rule 2', 2, 2, 2, 3, 'Type B', '2023-01-01', '2024-01-01', 'admin', 'admin'), 
+('Rule 3', 3, 3, 3, 2, 'Type C', '2023-01-01', '2024-01-01', 'admin', 'admin');

@@ -1,0 +1,29 @@
+-- Trigger for INDUSTRY table
+CREATE TRIGGER industry_changes
+AFTER INSERT OR UPDATE OR DELETE ON INDUSTRY
+FOR EACH ROW EXECUTE FUNCTION log_industry_changes();
+
+-- Trigger for SECTOR table
+CREATE TRIGGER sector_changes
+AFTER INSERT OR UPDATE OR DELETE ON SECTOR
+FOR EACH ROW EXECUTE FUNCTION log_sector_changes();
+
+-- Trigger for COUNTRY table
+CREATE TRIGGER country_changes
+AFTER INSERT OR UPDATE OR DELETE ON COUNTRY
+FOR EACH ROW EXECUTE FUNCTION log_country_changes();
+
+-- Trigger for REGION table
+CREATE TRIGGER region_changes
+AFTER INSERT OR UPDATE OR DELETE ON REGION
+FOR EACH ROW EXECUTE FUNCTION log_region_changes();
+
+-- Trigger for COMPANY table
+CREATE TRIGGER company_changes
+AFTER INSERT OR UPDATE OR DELETE ON COMPANY
+FOR EACH ROW EXECUTE FUNCTION log_company_changes();
+
+-- Trigger for COMPLIANCE_RULES table
+CREATE TRIGGER compliance_rules_changes
+AFTER INSERT OR UPDATE OR DELETE ON COMPLIANCE_RULES
+FOR EACH ROW EXECUTE FUNCTION log_compliance_rules_changes();
