@@ -99,21 +99,40 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Function for COMPLIANCE_RULES table
-CREATE FUNCTION log_compliance_rules_changes() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION log_compliance_rules_changes()
+RETURNS TRIGGER AS $$
 BEGIN
-    IF (TG_OP = 'DELETE') THEN
-        INSERT INTO compliance_rules_audit (ruleId, ruleDescription, industryId, sectorId, countryId, regionId, ruleType, effectiveDate, effectiveEndDate, operation, change_date, changed_by)
-        VALUES (OLD.ruleId, OLD.ruleDescription, OLD.industryId, OLD.sectorId, OLD.countryId, OLD.regionId, OLD.ruleType, OLD.effectiveDate, OLD.effectiveEndDate, 'DELETE', NOW(), USER);
-        RETURN OLD;
+    IF (TG_OP = 'INSERT') THEN
+        INSERT INTO COMPLIANCE_RULES_AUDIT (
+            ruleId, ruleDescription, companyId, industryId, sectorId, countryId, regionId, 
+            ruleType, effectiveDate, effectiveEndDate, operation, changed_by
+        )
+        VALUES (
+            NEW.ruleId, NEW.ruleDescription, NEW.companyId, NEW.industryId, NEW.sectorId, 
+            NEW.countryId, NEW.regionId, NEW.ruleType, NEW.effectiveDate, NEW.effectiveEndDate, 
+            'INSERT', NEW.created_by
+        );
     ELSIF (TG_OP = 'UPDATE') THEN
-        INSERT INTO compliance_rules_audit (ruleId, ruleDescription, industryId, sectorId, countryId, regionId, ruleType, effectiveDate, effectiveEndDate, operation, change_date, changed_by)
-        VALUES (NEW.ruleId, NEW.ruleDescription, NEW.industryId, NEW.sectorId, NEW.countryId, NEW.regionId, NEW.ruleType, NEW.effectiveDate, NEW.effectiveEndDate, 'UPDATE', NOW(), USER);
-        RETURN NEW;
-    ELSIF (TG_OP = 'INSERT') THEN
-        INSERT INTO compliance_rules_audit (ruleId, ruleDescription, industryId, sectorId, countryId, regionId, ruleType, effectiveDate, effectiveEndDate, operation, change_date, changed_by)
-        VALUES (NEW.ruleId, NEW.ruleDescription, NEW.industryId, NEW.sectorId, NEW.countryId, NEW.regionId, NEW.ruleType, NEW.effectiveDate, NEW.effectiveEndDate, 'INSERT', NOW(), USER);
-        RETURN NEW;
+        INSERT INTO COMPLIANCE_RULES_AUDIT (
+            ruleId, ruleDescription, companyId, industryId, sectorId, countryId, regionId, 
+            ruleType, effectiveDate, effectiveEndDate, operation, changed_by
+        )
+        VALUES (
+            NEW.ruleId, NEW.ruleDescription, NEW.companyId, NEW.industryId, NEW.sectorId, 
+            NEW.countryId, NEW.regionId, NEW.ruleType, NEW.effectiveDate, NEW.effectiveEndDate, 
+            'UPDATE', NEW.updated_by
+        );
+    ELSIF (TG_OP = 'DELETE') THEN
+        INSERT INTO COMPLIANCE_RULES_AUDIT (
+            ruleId, ruleDescription, companyId, industryId, sectorId, countryId, regionId, 
+            ruleType, effectiveDate, effectiveEndDate, operation, changed_by
+        )
+        VALUES (
+            OLD.ruleId, OLD.ruleDescription, OLD.companyId, OLD.industryId, OLD.sectorId, 
+            OLD.countryId, OLD.regionId, OLD.ruleType, OLD.effectiveDate, OLD.effectiveEndDate, 
+            'DELETE', OLD.updated_by
+        );
     END IF;
-    RETURN NULL;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
